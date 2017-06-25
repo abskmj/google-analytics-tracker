@@ -2,7 +2,7 @@ var promise = require('bluebird');
 var request = promise.promisify(require('request'));
 var queryString = require('querystring');
 
-module.exports = function (options) {
+var tracker = function (trackingId, options) {
     var baseUrl = 'https://www.google-analytics.com';
 
     // validate options
@@ -20,8 +20,8 @@ module.exports = function (options) {
     function trackEvent(event, override, callback) {
         var data = {
             v: 1,
-            tid: options.trackingId,
-            cid: 'cid',
+            tid: trackingId,
+            cid: event.cid,
             t: 'event',
             ec: event.category,
             ea: event.action,
@@ -54,4 +54,8 @@ module.exports = function (options) {
     return {
         trackEvent: trackEvent
     }
+}
+
+module.exports = function (trackingId, options) {
+    return new tracker(trackingId, options);
 }

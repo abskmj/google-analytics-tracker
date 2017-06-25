@@ -21,24 +21,24 @@ All the tracking requests to GA server is via node server. Hence, geographic dem
 # Example
 
 ```javascript
-var GA = require('./index');
+var options = {
+    debug: true
+};
 
-var ga = new GA({
-    debug: true,
-    trackingId: 'UA-xxxxxxx-x'
-});
+var tracker = require('@abskmj/google-analytics-tracker')('UA-XXXXXXXX-X', options);
 
-ga.trackEvent({
+var event = {
     category: 'click',
     action: 'search',
     label: 'google',
     value: 10
-},
-{
-    ip: '2xx.x.1x3.x'
-},
-function (error, response) {
-    console.log('===CALLBACK===');
+};
+
+var override = {
+    ip: '2XX.X.1X3.X'
+};
+
+tracker.trackEvent(event, override, function (error, response) {
     console.log(response.body);
 });
 ```
